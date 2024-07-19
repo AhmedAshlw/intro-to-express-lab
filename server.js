@@ -20,7 +20,8 @@ app.get('/roll/:numpara', (req, res) => {
     if(isNaN(req.params.numpara)){
         res.send("You must specify a number.")
     } else {
-        res.send(`<h1>Roll Number ${req.params.numpara}</h1>`);    }
+        let rand = Math.floor(Math.random() * (req.params.numpara)) + 1;
+        res.send(`<h1>Roll Number ${rand}</h1>`);    }
 });
 
 const collectibles = [
@@ -33,13 +34,14 @@ app.get('/collectible/:numInArray', (req, res) => {
     const name = collectibles[req.params.numInArray].name
     const price = collectibles[req.params.numInArray].price
     for(let i=0; i < collectibles.length; i++){
-    if(collectibles.indexOf(req.params.numInArray) ){
+    if(collectibles.indexOf(req.params.numInArray)){
         res.send(`So, you want the ${name}? For ${price}, it can be yours!`)
     } else {
         res.send("This item is not yet in stock. Check back soon!");   
     }
   }
 });
+//else if(req.params.numInArray >= collectibles.length) .. checked also the includes() , it don't work
 
 const shoes = [
     { name: "Birkenstocks", price: 50, type: "sandal" },
@@ -53,9 +55,11 @@ const shoes = [
 
 
 app.get('/shoes', (req, res) => {
-  const minPrice = req.query
-  const maxPrice = req.query
-  const type = req.query
+  const minPrice = req.query.minPrice
+  const maxPrice = req.query.maxPrice
+  const type = req.query.type
+
+  console.log(type)
 
   let arr = shoes
   if(minPrice){
@@ -67,7 +71,6 @@ app.get('/shoes', (req, res) => {
   if(type){
     arr = arr.filter((shoe)=> shoe.type === type)
   }
+
   res.send(arr);
 });
-
-//I wrote the code ,but still not viewing in browser ..
